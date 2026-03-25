@@ -3,16 +3,14 @@ import sqlite3
 
 app = Flask(__name__)
 
-DB_NAME = "database.db"
-
-def executar_query(query, params=(), fetch=False, commit=False):
-    conn = sqlite3.connect(DB_NAME)
+def executar_query(query, *args, fetch=False, commit=False):
+    conn = sqlite3.connect('loja.db')
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     resultado = None
 
     try:
-        cursor.execute(query, params)
+        cursor.execute(query, args)
 
         if commit:
             conn.commit()
@@ -25,75 +23,73 @@ def executar_query(query, params=(), fetch=False, commit=False):
 
 
 # GET - Listar todos
-@app.route('/livros', methods=['GET'])
-def listar_livros():
-    dados = executar_query("SELECT * FROM livros", fetch=True)
-    return jsonify([dict(l) for l in dados]), 200
+@app.route('/jogos', methods=['GET'])
+def listar_jogos():
+    dados = executar_query("SELECT * FROM jogos", fetch=True)
+    jogos = [dict(jogo) for jogo in dados]
+    return jsonify(jogos), 200
 
 
 # GET - Buscar por ID
-@app.route('/livros/<int:id>', methods=['GET'])
-def buscar_livro(id):
-    livro = executar_query("SELECT * FROM livros WHERE id = ?", (id,), fetch=True)
+@app.route('/jogos/<int:id>', methods=['GET'])
+def buscar_jogo(id):
+    jogo = executar_query("SELECT * FROM jogos WHERE id = ?", id, fetch=True)
 
-    if livro:
-        return jsonify(dict(livro[0])), 200
-    return jsonify({"erro": "Livro não encontrado"}), 404
+    if jogo:
+        return jsonify(dict(jogo[0])), 200
+    return jsonify({"erro": "Jogo não encontrado"}), 404
 
 
 # POST - Inserir
-@app.route('/livros', methods=['POST'])
-def criar_livro():
+@app.route('/jogos', methods=['POST'])
+def inserir_jogo():
     dados = request.get_json()
 
-    executar_query("""
-        INSERT INTO livros (titulo, autor, ano, disponivel)
-        VALUES (?, ?, ?, ?)
-    """, (
-        dados.get("titulo"),
-        dados.get("autor"),
-        dados.get("ano"),
-        dados.get("disponivel", True)
-    ), commit=True)
+    executar_query(
+        "INSERT INTO jogos (titulo, genero, preco, estoque) VALUES (?, ?, ?, ?)",
+        dados.get('titulo'),
+        dados.get('genero'),
+        dados.get('preco'),
+        dados.get('estoque'),
+        commit=True
+    )
 
-    return jsonify({"mensagem": "Livro criado com sucesso"}), 201
+    return jsonify({"mensagem": "Jogo criado com sucesso!"}), 201
 
 
 # PUT - Atualizar
-@app.route('/livros/<int:id>', methods=['PUT'])
-def atualizar_livro(id):
+@app.route('/jogos/<int:id>', methods=['PUT'])
+def atualizar_jogo(id):
     dados = request.get_json()
 
-    existe = executar_query("SELECT id FROM livros WHERE id = ?", (id,), fetch=True)
+    existe = executar_query("SELECT id FROM jogos WHERE id = ?", id, fetch=True)
     if not existe:
-        return jsonify({"erro": "Livro não encontrado"}), 404
+        return jsonify({"erro": "Jogo não encontrado"}), 404
 
-    executar_query("""
-        UPDATE livros
-        SET titulo = ?, autor = ?, ano = ?, disponivel = ?
-        WHERE id = ?
-    """, (
-        dados.get("titulo"),
-        dados.get("autor"),
-        dados.get("ano"),
-        dados.get("disponivel"),
-        id
-    ), commit=True)
+    executar_query(
+        "UPDATE jogos SET titulo = ?, genero = ?, preco = ?, estoque = ? WHERE id = ?",
+        dados.get('titulo'),
+        dados.get('genero'),
+        dados.get('preco'),
+        dados.get('estoque'),
+        id,
+        commit=True
+    )
 
     return '', 204
 
 
-# DELETE - Remover o livro selecionado pelo comando
-@app.route('/livros/<int:id>', methods=['DELETE'])
-def deletar_livro(id):
-    livro = executar_query("SELECT * FROM livros WHERE id = ?", (id,), fetch=True)
+# ❌ DELETE - Remover
+@app.route('/jogos/<int:id>', methods=['DELETE'])
+def deletar_jogo(id):
+    jogo = executar_query("SELECT titulo FROM jogos WHERE id = ?", id, fetch=True)
 
-    if not livro:
-        return jsonify({"erro": "Livro não encontrado"}), 404
+    if not jogo:
+        return jsonify({"erro": "Jogo não encontrado"}), 404
 
-    executar_query("DELETE FROM livros WHERE id = ?", (id,), commit=True)
+    executar_query("DELETE FROM jogos WHERE id = ?", id, commit=True)
 
-    return jsonify({"mensagem": "Livro removido com sucesso"}), 200
+    return jsonify({"mensagem": f"Jogo '{jogo[0]['titulo']}' removido!"}), 200
 
 
 if __name__ == '__main__':
