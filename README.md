@@ -1,6 +1,6 @@
 # Biblioteca API
 
-API REST simples para gerenciamento de livros usando Flask + SQLite.
+API REST simples para gerenciamento de Jogos usando Flask + SQLite.
 
 ---
 
@@ -59,12 +59,12 @@ http://127.0.0.1:5000
 
 ---
 
-## Criar livro
+## Criar Jogo
 
 ```bash
-curl -X POST http://127.0.0.1:5000/livros \
+curl -X POST http://127.0.0.1:5000/jogos \
 -H "Content-Type: application/json" \
--d '{"titulo": "Dom Casmurro", "autor": "Machado de Assis", "ano": 1899}'
+-d "{\"titulo\":\"FIFA 24\",\"genero\":\"Esporte\",\"preco\":299.90,\"estoque\":10}"
 ```
 
 ---
@@ -72,7 +72,7 @@ curl -X POST http://127.0.0.1:5000/livros \
 ## Listar todos
 
 ```bash
-curl http://127.0.0.1:5000/livros
+curl http://127.0.0.1:5000/ogos
 ```
 
 ---
@@ -80,7 +80,7 @@ curl http://127.0.0.1:5000/livros
 ## Buscar por ID
 
 ```bash
-curl http://127.0.0.1:5000/livros/1
+curl http://127.0.0.1:5000/Jogoss/1
 ```
 
 ---
@@ -88,9 +88,9 @@ curl http://127.0.0.1:5000/livros/1
 ## Atualizar
 
 ```bash
-curl -X PUT http://127.0.0.1:5000/livros/1 \
+curl -X PUT http://127.0.0.1:5000/jogos/1 \
 -H "Content-Type: application/json" \
--d '{"titulo": "Dom Casmurro", "autor": "Machado de Assis", "ano": 1900, "disponivel": false}'
+-d "{\"titulo\":\"FIFA 24\",\"genero\":\"Esporte\",\"preco\":249.90,\"estoque\":8}"
 ```
 
 ---
@@ -98,7 +98,7 @@ curl -X PUT http://127.0.0.1:5000/livros/1 \
 ## Deletar
 
 ```bash
-curl -X DELETE http://127.0.0.1:5000/livros/1
+curl -X DELETE http://127.0.0.1:5000/jogos/1
 ```
 
 ---
