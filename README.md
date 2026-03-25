@@ -50,7 +50,7 @@ python app.py
 A API estará disponível em:
 
 ```
-http://127.0.0.1:5000
+http://127.0.0.1:5000/jogos
 ```
 
 ---
@@ -72,7 +72,7 @@ curl -X POST http://127.0.0.1:5000/jogos \
 ## Listar todos
 
 ```bash
-curl http://127.0.0.1:5000/ogos
+curl http://127.0.0.1:5000/jogos
 ```
 
 ---
