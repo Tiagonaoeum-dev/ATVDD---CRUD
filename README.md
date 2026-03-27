@@ -64,7 +64,12 @@ http://127.0.0.1:5000/jogos
 ```bash
 curl -X POST http://127.0.0.1:5000/jogos \
 -H "Content-Type: application/json" \
--d "{\"titulo\":\"FIFA 24\",\"genero\":\"Esporte\",\"preco\":299.90,\"estoque\":10}"
+-d "{
+  "titulo": "Call of Duty WW2",
+  "genero": "FPS",
+  "preco": 249.90,
+  "estoque": 8
+}"
 ```
 
 ---
@@ -90,7 +95,12 @@ curl http://127.0.0.1:5000/Jogoss/1
 ```bash
 curl -X PUT http://127.0.0.1:5000/jogos/1 \
 -H "Content-Type: application/json" \
--d "{\"titulo\":\"FIFA 24\",\"genero\":\"Esporte\",\"preco\":249.90,\"estoque\":8}"
+-d "{
+  "titulo": "Call of Duty WW2",
+  "genero": "FPS",
+  "preco": 229.90,
+  "estoque": 8
+}}"
 ```
 
 ---
