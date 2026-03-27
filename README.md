@@ -9,8 +9,7 @@ API REST simples para gerenciamento de Jogos usando Flask + SQLite.
 ### 1. Clonar o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/biblioteca-api.git
-cd biblioteca-api
+git clone https://github.com/Tiagonaoeum-dev/ATVDD---CRUD
 ```
 
 ---
